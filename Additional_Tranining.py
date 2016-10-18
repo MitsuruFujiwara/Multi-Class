@@ -3,24 +3,19 @@
 import numpy as np
 import pandas as pd
 
-from keras.models import Sequential, model_from_json
-from keras.layers import Dense, Activation
+from keras.models import model_from_json
 
 import matplotlib.pyplot as plt
+
+"""
+Module for additional training
+"""
 
 # load dataset
 df = pd.read_csv('dorcus_DL_study.csv')
 
-# load autoencoder
-autoencoder = model_from_json(open('model_enc.json').read())
-autoencoder.load_weights('param_enc.h5')
-
-# set initial parameters
-_w = autoencoder.get_weights()
-w = _w[:6]
-
 # number of training
-numTraining = 200000
+numTraining = 10000
 
 # number of class
 Cls = list(df['class'].unique()) # [1, 2, 3, 4]
@@ -39,17 +34,11 @@ def __trY(y):
 trY = np.array(list(__trY(Y))).reshape(len(Y), numCls)
 trX = np.array(X)
 
-# set model
-model = Sequential()
-model.add(Dense(output_dim=10, input_dim=2))
-model.add(Activation('relu'))
-model.add(Dense(output_dim=10, input_dim=10))
-model.add(Activation('relu'))
-model.add(Dense(output_dim=4, input_dim=10))
-model.add(Activation('softmax'))
+# load model
+model = model_from_json(open('model.json').read())
 
-# set initial weights
-model.set_weights(w)
+# load parameters
+model.load_weights('param.h5')
 
 # compile
 model.compile(loss='categorical_crossentropy', optimizer='adagrad', metrics=['accuracy'])

@@ -45,9 +45,9 @@ print('Test accuracy :', score[1])
 # function for generating decision boundary
 def plot_decision_boundary(pred_func):
     # Set min and max values and give it some padding
-    x_min, x_max = int(trX[:, 0].min()) - 1, int(trX[:, 0].max()) + 1
-    y_min, y_max = int(trX[:, 1].min()) - 1, int(trX[:, 1].max()) + 1
-    h = 1
+    x_min, x_max = int(trX[:, 0].min()) - 10, int(trX[:, 0].max()) + 10
+    y_min, y_max = int(trX[:, 1].min()) - 10, int(trX[:, 1].max()) + 10
+    h = 0.1
 
     # Generate a grid of points with distance h between them
     xx, yy = np.meshgrid(np.arange(x_min, x_max, h), np.arange(y_min, y_max, h))
