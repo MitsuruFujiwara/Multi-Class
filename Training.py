@@ -12,15 +12,15 @@ import matplotlib.pyplot as plt
 df = pd.read_csv('dorcus_DL_study.csv')
 
 # load autoencoder
-autoencoder = model_from_json(open('model_enc.json').read())
-autoencoder.load_weights('param_enc.h5')
+#autoencoder = model_from_json(open('model_enc.json').read())
+#autoencoder.load_weights('param_enc.h5')
 
 # set initial parameters
-_w = autoencoder.get_weights()
-w = _w[:6]
+#_w = autoencoder.get_weights()
+#w = _w[:6]
 
 # number of training
-numTraining = 200000
+numTraining = 80000
 
 # number of class
 Cls = list(df['class'].unique()) # [1, 2, 3, 4]
@@ -41,15 +41,15 @@ trX = np.array(X)
 
 # set model
 model = Sequential()
-model.add(Dense(output_dim=10, input_dim=2))
+model.add(Dense(output_dim=2, input_dim=2, init='normal'))
 model.add(Activation('relu'))
-model.add(Dense(output_dim=10, input_dim=10))
+model.add(Dense(output_dim=2, input_dim=2, init='normal'))
 model.add(Activation('relu'))
-model.add(Dense(output_dim=4, input_dim=10))
+model.add(Dense(output_dim=4, input_dim=2, init='normal'))
 model.add(Activation('softmax'))
 
 # set initial weights
-model.set_weights(w)
+#model.set_weights(w)
 
 # compile
 model.compile(loss='categorical_crossentropy', optimizer='adagrad', metrics=['accuracy'])

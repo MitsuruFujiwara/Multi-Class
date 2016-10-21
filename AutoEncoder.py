@@ -26,15 +26,15 @@ trX = np.array(X)
 
 # encode
 autoencoder = Sequential()
-autoencoder.add(Dense(output_dim=10, input_dim=2, init='uniform'))
+autoencoder.add(Dense(output_dim=2, input_dim=2, init='uniform'))
 autoencoder.add(Activation('relu'))
-autoencoder.add(Dense(output_dim=10, input_dim=10, init='uniform'))
+autoencoder.add(Dense(output_dim=2, input_dim=2, init='uniform'))
 autoencoder.add(Activation('relu'))
-autoencoder.add(Dense(output_dim=4, input_dim=10, init='uniform'))
+autoencoder.add(Dense(output_dim=4, input_dim=2, init='uniform'))
 autoencoder.add(Activation('softmax'))
 
 # decode
-autoencoder.add(Dense(output_dim=10, input_dim=4, init='uniform'))
+autoencoder.add(Dense(output_dim=2, input_dim=4, init='uniform'))
 autoencoder.add(Activation('softmax'))
 autoencoder.add(Dense(output_dim=10, input_dim=10, init='uniform'))
 autoencoder.add(Activation('relu'))
