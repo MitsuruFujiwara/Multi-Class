@@ -3,7 +3,7 @@
 import numpy as np
 import pandas as pd
 
-from keras.models import model_from_json
+from keras.models import load_model
 
 import matplotlib.pyplot as plt
 
@@ -28,10 +28,7 @@ trY = np.array(list(__trY(Y))).reshape(len(Y), numCls)
 trX = np.array(X)
 
 # load model
-model = model_from_json(open('model.json').read())
-
-# load parameters
-model.load_weights('param.h5')
+model = load_model('model.h5')
 
 # compile
 model.compile(loss='categorical_crossentropy', optimizer='adagrad', metrics=['accuracy'])

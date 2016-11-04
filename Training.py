@@ -3,21 +3,13 @@
 import numpy as np
 import pandas as pd
 
-from keras.models import Sequential, model_from_json
+from keras.models import Sequential, load_model
 from keras.layers import Dense, Activation
 
 import matplotlib.pyplot as plt
 
 # load dataset
 df = pd.read_csv('dorcus_DL_study.csv')
-
-# load autoencoder
-#autoencoder = model_from_json(open('model_enc.json').read())
-#autoencoder.load_weights('param_enc.h5')
-
-# set initial parameters
-#_w = autoencoder.get_weights()
-#w = _w[:6]
 
 # number of training
 numTraining = 80000
@@ -41,15 +33,27 @@ trX = np.array(X)
 
 # set model
 model = Sequential()
-model.add(Dense(output_dim=2, input_dim=2, init='normal'))
+model.add(Dense(output_dim=3, input_dim=2))
 model.add(Activation('relu'))
-model.add(Dense(output_dim=2, input_dim=2, init='normal'))
+model.add(Dense(output_dim=3, input_dim=3))
 model.add(Activation('relu'))
-model.add(Dense(output_dim=4, input_dim=2, init='normal'))
+model.add(Dense(output_dim=4, input_dim=3))
 model.add(Activation('softmax'))
 
+# load autoencoder
+encoder1 = load_model('encoder1.h5')
+encoder2 = load_model('encoder2.h5')
+encoder3 = load_model('encoder3.h5')
+
 # set initial weights
-#model.set_weights(w)
+w = model.get_weights()
+w[0] = encoder1.get_weights()[0]
+w[1] = encoder1.get_weights()[1]
+w[2] = encoder2.get_weights()[0]
+w[3] = encoder2.get_weights()[1]
+w[4] = encoder3.get_weights()[0]
+w[5] = encoder3.get_weights()[1]
+model.set_weights(w)
 
 # compile
 model.compile(loss='categorical_crossentropy', optimizer='adagrad', metrics=['accuracy'])
@@ -66,8 +70,4 @@ ax1.plot(his.history['loss'])
 plt.savefig('loss.png')
 
 # save model
-json_string = model.to_json()
-open('model.json', 'w').write(json_string)
-
-# save parameters
-model.save_weights('param.h5')
+model.save('model.h5')
